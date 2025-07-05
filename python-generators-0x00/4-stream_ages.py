@@ -36,4 +36,7 @@ def get_uaser_ages():
             total_age += age
             count += 1
             yield age
-        
+
+    if count > 0:
+        average_age = total_age / count
+        yield average_age
