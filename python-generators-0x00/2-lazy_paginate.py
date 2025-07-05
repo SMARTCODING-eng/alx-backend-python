@@ -1,6 +1,6 @@
 import mysql.connector
 from mysql.connector import Error
-def lazy_paginate(page_size):
+def lazy_paginate(page_size, offset=0):
     try:
         connection = mysql.connector.connect(
             host='localhost',
@@ -11,9 +11,9 @@ def lazy_paginate(page_size):
 
         cursor = connection.cursor(dictionary=True)
         cursor.execute("SELECT * FROM user_data")
-        offset = 0
+        
         while True:
-            cursor.execute("SELECT * FEROM user_data LIMIT %s OFFSET %s, (page_size)")
+            cursor.execute("SELECT * FEROM user_data LIMIT")
             rows = cursor.fetchall()
             if not rows:
                 break
@@ -25,4 +25,3 @@ def lazy_paginate(page_size):
         print(f"Database error: {e}")
         yield None
         
-
