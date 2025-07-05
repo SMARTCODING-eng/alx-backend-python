@@ -6,7 +6,7 @@ from mysql.connector import Error
 
 
 
-def stream_users_in_bathes(batch_size):
+def stream_users_in_batches(batch_size):
     try:
         connection = mysql.connector.connect(
             host='localhost',
@@ -21,7 +21,10 @@ def stream_users_in_bathes(batch_size):
             rows = cursor.fetchmany(batch_size)
             if not rows:
                 break
+                
             yield rows
+           
+            
     except Error as e:
         print(f"Database Error: {e}")
     finally:
@@ -31,13 +34,9 @@ def stream_users_in_bathes(batch_size):
             connection.close()
 
 def batch_processing(batch_size):
-    for batch in stream_users_in_bathes(batch_size):
+    for batch in stream_users_in_batches(batch_size):
         for user in batch:
             if user['age'] > 25:
                 yield user
+    return  # Added return statement at the end of the function
 
-# Example usage:
-if __name__ == "__main__":
-    batch_size = 10
-    for user in batch_processing(batch_size):
-        print(user)
