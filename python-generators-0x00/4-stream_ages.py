@@ -14,15 +14,26 @@ def stream_user_ages():
         )
 
         cursor = connection.cursor(dictionary=True)
-        cursor.execute("SELECT age FROM user  data")
-        while True:
-            row = cursor.fetchone()
-            if row is None:
-                break
-            yield row['age']
-
-
+        cursor.execute("SELECT age FROM users")
     except Error as e:
         print(f"Database error: {e}")
         yield None
+    finally:
+        if 'cursor' in locals():
+            cursor.close()
+        if 'connection' in locals():
+            connection.close()
 
+
+def get_uaser_ages():
+    total_age = 0.0
+    count = 0
+    for row in stream_user_ages():
+        if row is None:
+            continue
+        age = row['age']
+        if age is not None:
+            total_age += age
+            count += 1
+            yield age
+        
