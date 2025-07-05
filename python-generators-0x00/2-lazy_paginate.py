@@ -14,7 +14,7 @@ def paginate_users(page_size, offset):
         
        
         cursor.execute(
-            "SELECT * FEROM user_data LIMIT", "OFFSET"
+            "SELECT * FROM user_data LIMIT", "OFFSET"
             
         )
         return cursor.fetchall()
