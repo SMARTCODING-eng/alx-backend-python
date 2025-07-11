@@ -21,12 +21,18 @@ def create_database(connection):
     try:
         cursor = connection.cursor()
         cursor.execute("CREATE DATABASE IF NOT EXISTS ALX_prodev")
-        print("Database 'ALX_prodev' created successfully")
+        cursor.execute("SHOW DATABASES LIKE 'ALX_prodev'")
+        if cursor.fetchone():
+            print("Database 'ALX_prodev' created successfully")
+            return True
+        return False
     except Error as e:
         print(f"Error creating database: {e}")
     finally:
-        cursor.close()
-        connection.commit()
+        if 'cursor' in locals():
+            cursor.close()
+        if 'connection' in locals():
+            connection.commit()
 
 
 def connect_to_prodev():
@@ -57,7 +63,11 @@ def create_table(connection):
                 age INT NOT NULL
             )
         """)
-        print("Table 'user_data' created successfully")
+        cursor.execute("SHOW TABLES LIKE 'user_data'")
+        if cursor.fetchone():
+            print("Table 'user_data' created and verified successfully")
+            return True
+        return False
     except Error as e:
         print(f"Error creating table: {e}")
     finally:
@@ -68,19 +78,29 @@ def insert_data(connection, data):
     """insert data from CSV file into user_data table"""
     try:
         cursor = connection.cursor()
+        inserted_rows = 0
         with open(data, 'r') as file:
             csv_data = csv.reader(file)
-            next(csv_data)  # Skip header row
+            next(csv_data)
+            # Skip header row
+
             for row in csv_data:
                 if len(row) != 3:
                     print(f"Skipping invalid row: {row}")
                     continue
-                name, email, age = row
-                cursor.execute("INSERT INTO user_data (name, email, age) VALUES (%s, %s, %s)", (name, email, age))
-        print("Data inserted successfully")
+
+                try:
+                    cursor.execute(
+                        "INSERT INTO user_data (name, email, age) VALUES (%s, %s, %s)",
+                        (row[0], row[1], int(row[2])))
+                    inserted_rows += 1
+                except Error as e:
+                    print(f"Error inserting row {row}: {e}")
+        connection.commit()
+        print(f"Data inserted successfully: {inserted_rows} rows")
     except Error as e:
         print(f"Error inserting data: {e}")
+        return False
     finally:
         cursor.close()
         connection.commit()
-        
