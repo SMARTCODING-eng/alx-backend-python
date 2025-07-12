@@ -3,7 +3,7 @@ import functools
 
 
 def with_db_connection(func):
-    """ your code goes here""" 
+    
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         conn = sqlite3.connect('users.db')
@@ -12,7 +12,7 @@ def with_db_connection(func):
             conn.commit()
             return result
         except Exception as e:
-            conn.commit()
+            conn.rollback()
             print(f"An error occurred: {e}")
         finally:
             conn.close()
