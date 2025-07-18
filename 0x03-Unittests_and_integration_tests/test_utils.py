@@ -71,7 +71,6 @@ class TestAccessNestedMap(unittest.TestCase):
         self.assertEqual(expected_key, context.exception.args[0])
 
 
-# E302 fixed: expected 2 blank lines before class/function definition
 def get_json(url: str):
     response = requests.get(url)
     response.raise_for_status()
@@ -93,7 +92,6 @@ class TestGetJson(unittest.TestCase):
         self.assertEqual(result, test_payload)
 
 
-# E302 fixed: expected 2 blank lines before class/function definition
 def memoize(fn):
     attr_name = '_memoize_cache_' + fn.__name__
 
