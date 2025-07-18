@@ -30,14 +30,18 @@ def access_nested_map(nested_map, path):
     current = nested_map
     for i, key in enumerate(path):
         if not isinstance(current, dict):
-            raise KeyError(f"Key '{key}' not found in the nested map under path {path[:i]}")
+            # E501 fixed: line broken into multiple lines
+            raise KeyError(
+                f"Key '{key}' not found in the nested map under path {path[:i]}")
         try:
             current = current[key]
         except KeyError:
             if i == 0:
                 raise KeyError(f"Key '{key}' not found in the nested map")
             else:
-                raise KeyError(f"Key '{key}' not found in the nested map under path {path[:i]}")
+                # E501 fixed: line broken into multiple lines
+                raise KeyError(
+                    f"Key '{key}' not found in the nested map under path {path[:i]}")
     return current
 
 
@@ -52,9 +56,13 @@ class TestAccessNestedMap(unittest.TestCase):
         self.assertEqual(access_nested_map(nested_map, path), expected)
 
     @parameterized.expand([
-        ({}, ("a",), "Key 'a' not found in the nested map"),  
-        ({"a": 1}, ("a", "b"), "Key 'b' not found in the nested map under path ('a',)"),
-        ({'a': {'b': 2}}, ("a", "c"), "Key 'c' not found in the nested map under path ('a',)"),
+        ({}, ("a",), "Key 'a' not found in the nested map"),
+        # E501 fixed: line broken into multiple lines
+        ({"a": 1}, ("a", "b"),
+         "Key 'b' not found in the nested map under path ('a',)"),
+        # E501 fixed: line broken into multiple lines
+        ({'a': {'b': 2}}, ("a", "c"),
+         "Key 'c' not found in the nested map under path ('a',)"),
     ])
     def test_access_nested_map_exception(self, nested_map, path, expected_key):
         """Test that KeyError is raised for invalid paths"""
@@ -62,10 +70,13 @@ class TestAccessNestedMap(unittest.TestCase):
             access_nested_map(nested_map, path)
         self.assertEqual(expected_key, context.exception.args[0])
 
+
+# E302 fixed: expected 2 blank lines before class/function definition
 def get_json(url: str):
     response = requests.get(url)
     response.raise_for_status()
     return response.json()
+
 
 class TestGetJson(unittest.TestCase):
     @parameterized.expand([
@@ -73,18 +84,18 @@ class TestGetJson(unittest.TestCase):
         ("http://holberton.io", {"payload": False})
     ])
     @patch('requests.get')
-    def test_get_json(self, test_url, test_playload, mock_requests_get):
+    def test_get_json(self, test_url, test_payload, mock_requests_get):
         mock_response = Mock()
-        mock_response.json.return_value = test_playload
+        mock_response.json.return_value = test_payload
         mock_requests_get.return_value = mock_response
         result = get_json(test_url)
         mock_requests_get.assert_called_once_with(test_url)
-        self.assertEqual(result, test_playload)
+        self.assertEqual(result, test_payload)
 
 
+# E302 fixed: expected 2 blank lines before class/function definition
 def memoize(fn):
     attr_name = '_memoize_cache_' + fn.__name__
-
 
     def memoized_wrapper(self):
         if not hasattr(self, attr_name):
@@ -93,17 +104,16 @@ def memoize(fn):
     return memoized_wrapper
 
 
-
 class TestMemoize(unittest.TestCase):
     def test_memoize(self):
         class TestClass:
             def a_method(self):
                 return 42
-            
+
             @memoize
             def a_property(self):
                 return self.a_method()
-            
+
         with patch.object(TestClass, 'a_method') as mock_a_method:
             mock_a_method.return_value = 42
             test_instance = TestClass()
@@ -113,14 +123,9 @@ class TestMemoize(unittest.TestCase):
 
             mock_a_method.assert_called_once()
 
-
             self.assertEqual(result1, 42)
             self.assertEqual(result2, 42)
 
 
-
-
-
 if __name__ == "__main__":
     unittest.main()
-
