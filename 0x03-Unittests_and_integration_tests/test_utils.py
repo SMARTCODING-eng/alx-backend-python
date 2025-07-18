@@ -3,7 +3,6 @@
 import unittest
 from parameterized import parameterized
 
-
 def access_nested_map(nested_map, path):
     """
     Access a value in a nested dictionary using a sequence of keys.
@@ -15,6 +14,10 @@ def access_nested_map(nested_map, path):
     Returns:
         The value reached by following the path in the nested_map.
 
+    Raises:
+        KeyError: If any key in the path is not found, or if a non-dictionary
+                  value is encountered before the end of the path.
+
     Example:
         >>> access_nested_map({"a": 1}, ("a",))
         1
@@ -22,8 +25,16 @@ def access_nested_map(nested_map, path):
         2
     """
     current = nested_map
-    for key in path:
-        current = current[key]
+    for i, key in enumerate(path):
+        if not isinstance(current, dict):
+            raise KeyError(f"Key '{key}' not found in the nested map under path {path[:i]}")
+        try:
+            current = current[key]
+        except KeyError:
+            if i == 0:
+                raise KeyError(f"Key '{key}' not found in the nested map")
+            else:
+                raise KeyError(f"Key '{key}' not found in the nested map under path {path[:i]}")
     return current
 
 
@@ -38,14 +49,15 @@ class TestAccessNestedMap(unittest.TestCase):
         self.assertEqual(access_nested_map(nested_map, path), expected)
 
     @parameterized.expand([
-        ({}, ("a",), "Key 'a' not found in the nested map"),
+        ({}, ("a",), "Key 'a' not found in the nested map"),  
         ({"a": 1}, ("a", "b"), "Key 'b' not found in the nested map under path ('a',)"),
+        ({'a': {'b': 2}}, ("a", "c"), "Key 'c' not found in the nested map under path ('a',)"),
     ])
     def test_access_nested_map_exception(self, nested_map, path, expected_key):
         """Test that KeyError is raised for invalid paths"""
         with self.assertRaises(KeyError) as context:
             access_nested_map(nested_map, path)
-        self.assertIn(expected_key, str(context.exception))
+        self.assertEqual(expected_key, context.exception.args[0])
 
 
 if __name__ == "__main__":
