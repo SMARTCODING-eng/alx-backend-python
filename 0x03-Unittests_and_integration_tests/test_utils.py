@@ -1,5 +1,5 @@
-#!/user/bin/env python3
 
+#!/usr/bin/env python3
 import unittest
 
 def access_nested_map(nested_map, path):
