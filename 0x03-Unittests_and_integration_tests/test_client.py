@@ -48,7 +48,7 @@ class TestGithubOrgClient(unittest.TestCase):
 
     
     @patch('client.get_json')
-    def TestCase(self, mock_get_json: Mock) -> None:
+    def Test_Case(self, mock_get_json: Mock) -> None:
         """
         Tests that GithubOrgClient.public_repos returns the expected list of repos.
         Mocks get_json to return a chosen payload and
