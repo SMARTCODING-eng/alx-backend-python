@@ -13,13 +13,11 @@ from typing import (
     Callable,
 )
 
-
 __all__ = [
     "access_nested_map",
     "get_json",
     "memoize",
 ]
-
 
 def access_nested_map(nested_map, path):
     """
@@ -48,19 +46,19 @@ def access_nested_map(nested_map, path):
         nested_map = nested_map[key]
     return nested_map
 
-
 class TestAccessNestedMap(unittest.TestCase):
     @parameterized.expand([
-        ({"a": 1}, ("a",), 1),
+        ({"a": 1}, ("a"), 1),
         ({"a": {"b": 2}}, ("a",), {"b": 2}),
         ({"a": {"b": 2}}, ("a", "b"), 2),
     ])
     def test_access_nested_map(self, nested_map, path, expected):
-        """Test that access_nested_map returns the correct value for given inputs"""
+        """Test that access_nested_map 
+        returns the correct value for given inputs"""
         self.assertEqual(access_nested_map(nested_map, path), expected)
 
     @parameterized.expand([
-        ({}, ("a",), "a"),    
+        ({}, ("a"), "a"),    
         ({"a": 1}, ("a", "b"), "b"),       
         ({'a': {'b': 2}}, ("a", "c"), "c"),
     ])
@@ -70,11 +68,9 @@ class TestAccessNestedMap(unittest.TestCase):
             access_nested_map(nested_map, path)
         self.assertEqual(expected_key, context.exception.args[0])
 
-
 def get_json(url: str) -> Dict:
     response = requests.get(url)
     return response.json()
-
 
 class TestGetJson(unittest.TestCase):
     @parameterized.expand([
@@ -100,9 +96,6 @@ def memoize(fn: Callable) -> Callable:
         return getattr(self, attr_name)
     return property(memoized)
 
-
-
-
 class TestMemoize(unittest.TestCase):
     def test_memoize(self):
         class TestClass:
@@ -124,7 +117,6 @@ class TestMemoize(unittest.TestCase):
 
             self.assertEqual(result1, 42)
             self.assertEqual(result2, 42)
-
 
 if __name__ == "__main__":
     unittest.main()
