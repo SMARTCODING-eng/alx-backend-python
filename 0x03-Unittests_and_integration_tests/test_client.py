@@ -34,7 +34,8 @@ class TestGithubOrgClient(unittest.TestCase):
 
     def test_public_repos_url(self) -> None:
         """
-        Tests that _public_repos_url returns the expected URL based on the mocked org payload.
+        Tests that _public_repos_url returns the
+        expected URL based on the mocked org payload.
         """
         expected_url = "https://api.github.com/orgs/test_org/repos"
 
@@ -49,7 +50,8 @@ class TestGithubOrgClient(unittest.TestCase):
     @patch('client.get_json')
     def test_public_repos(self, mock_get_json: Mock) -> None:
         """
-        Tests that GithubOrgClient.public_repos returns the expected list of repos.
+        ths check if Tests that GithubOrgClient.public_repos returns
+        the expected list.
         Mocks get_json to return a chosen payload and
         GithubOrgClient._public_repos_url as a property.
         """
@@ -60,17 +62,13 @@ class TestGithubOrgClient(unittest.TestCase):
             {"name": "repo4"},
         ]
         mock_get_json.return_value = test_repos_payload
-
         test_public_repos_url_value = "https://api.github.com/orgs/test_org/repos"
-
         with patch('client.GithubOrgClient._public_repos_url',
                    new_callable=PropertyMock) as mock_public_repos_url:
-
             mock_public_repos_url.return_value = test_public_repos_url_value
             client = GithubOrgClient("test_org")
             repos = client.public_repos()
             expected_repos = ["repo1", "repo2", "repo3", "repo4"]
-
             self.assertEqual(repos, expected_repos)
             mock_get_json.assert_called_once_with(test_public_repos_url_value)
             mock_public_repos_url.assert_called_once()
