@@ -135,12 +135,16 @@ class TestMemoize(unittest.TestCase):
     is correctly used
     """
     def test_memoize(self):
+        """This function check if correct out will be return"""
         class TestClass:
+            """the test class"""
             def a_method(self):
+                """the wrap function in the TestClass"""
                 return 42
 
             @memoize
             def a_property(self):
+                """the wrap fuction for a_property"""
                 return self.a_method()
 
         with patch.object(TestClass, 'a_method') as mock_a_method:
