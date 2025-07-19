@@ -19,23 +19,20 @@ class TestGithubOrgClient(unittest.TestCase):
         Tests that GithubOrgClient.org returns the correct value
         and that get_json is called once with the expected argument.
         """
-        with patch('requests.get') as mock_get:
-            expected_payload = {
+        expected_payload = {
                 "login": org_name,
                 "id": 12345,
                 "repos_url": f"https://api.github.com/orgs/{org_name}/repos"
             }
-            mock_response = Mock()
-            mock_response.json.return_value = expected_payload          
-            mock_get.return_value = mock_response
+        with patch('client.get_json', return_value=expected_payload) as mock_get_json:
             client = GithubOrgClient(org_name)
             result = client.org          
             expected_url = f"https://api.github.com/orgs/{org_name}"
-            mock_get.assert_called_once_with(expected_url)
+            mock_get_json.assert_called_once_with(expected_url)
             self.assertEqual(result, expected_payload)
 
 
-    def test_public_repos_url(self) -> None:
+    def test_public_repos(self) -> None:
         """
         Tests that _public_repos_url returns the expected URL based on the mocked org payload.
         """
