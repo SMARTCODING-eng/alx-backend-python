@@ -94,6 +94,7 @@ class TestGetJson(unittest.TestCase):
     ])
     @patch('requests.get')
     def test_get_json(self, test_url, test_payload, mock_requests_get):
+        """The function try to get http request from json"""
         mock_response = Mock()
         mock_response.json.return_value = test_payload
         mock_requests_get.return_value = mock_response
@@ -130,7 +131,7 @@ def memoize(fn: Callable) -> Callable:
 
 class TestMemoize(unittest.TestCase):
     """
-    This code test if the function memoize 
+    This code test if the function memoize
     is correctly used
     """
     def test_memoize(self):
