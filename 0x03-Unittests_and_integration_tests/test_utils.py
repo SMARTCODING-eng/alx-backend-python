@@ -19,6 +19,7 @@ __all__ = [
     "memoize",
 ]
 
+
 def access_nested_map(nested_map, path):
     """
     Access a value in a nested dictionary using a sequence of keys.
@@ -46,6 +47,7 @@ def access_nested_map(nested_map, path):
         nested_map = nested_map[key]
     return nested_map
 
+
 class TestAccessNestedMap(unittest.TestCase):
     @parameterized.expand([
         ({"a": 1}, ("a"), 1),
@@ -67,6 +69,7 @@ class TestAccessNestedMap(unittest.TestCase):
         with self.assertRaises(KeyError) as context:
             access_nested_map(nested_map, path)
         self.assertEqual(expected_key, context.exception.args[0])
+
 
 def get_json(url: str) -> Dict:
     response = requests.get(url)
@@ -96,6 +99,7 @@ def memoize(fn: Callable) -> Callable:
         return getattr(self, attr_name)
     return property(memoized)
 
+
 class TestMemoize(unittest.TestCase):
     def test_memoize(self):
         class TestClass:
@@ -117,6 +121,7 @@ class TestMemoize(unittest.TestCase):
 
             self.assertEqual(result1, 42)
             self.assertEqual(result2, 42)
+
 
 if __name__ == "__main__":
     unittest.main()
