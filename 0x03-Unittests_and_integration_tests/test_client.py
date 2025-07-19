@@ -27,9 +27,9 @@ class TestGithubOrgClient(unittest.TestCase):
             "repos_url": f"https://api.github.com/orgs/{org_name}/repos"
         }
         with patch(
-            'client.get_json',
-            return_value=expected_payload
-            ) as mock_get_json:
+                'client.get_json',
+                return_value=expected_payload
+                ) as mock_get_json:
             client = GithubOrgClient(org_name)
             result = client.org
             expected_url = f"https://api.github.com/orgs/{org_name}"
@@ -99,9 +99,8 @@ class TestGithubOrgClient(unittest.TestCase):
         'expected_repos': expected_repos,
         'apache2_repos': apache2_repos
     }
-    for
-        org_payload, repos_payload, expected_repos, apache2_repos
-        in fixtures.TEST_PAYLOAD
+    for org_payload, repos_payload, expected_repos, apache2_repos
+    in fixtures.TEST_PAYLOAD
 ])
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     """ Integration test for GithubOrgClient.public_repos """
