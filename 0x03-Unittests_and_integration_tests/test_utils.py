@@ -50,6 +50,10 @@ def access_nested_map(nested_map, path):
 
 
 class TestAccessNestedMap(unittest.TestCase):
+    """
+    This is an example testcases that uses parameterized
+    expanssion to test if the code is correct
+    """
     @parameterized.expand([
         ({"a": 1}, ("a"), 1),
         ({"a": {"b": 2}}, ("a",), {"b": 2}),
@@ -80,6 +84,10 @@ def get_json(url: str) -> Dict:
 
 
 class TestGetJson(unittest.TestCase):
+    """
+    This is a class that mock http call and
+    get http from a remote json.
+    """
     @parameterized.expand([
         ("http://example.com", {"payload": True}),
         ("http://holberton.io", {"payload": False})
@@ -121,6 +129,10 @@ def memoize(fn: Callable) -> Callable:
 
 
 class TestMemoize(unittest.TestCase):
+    """
+    This code test if the function memoize 
+    is correctly used
+    """
     def test_memoize(self):
         class TestClass:
             def a_method(self):
