@@ -25,9 +25,9 @@ class TestGithubOrgClient(unittest.TestCase):
             "id": 12345,
             "repos_url": f"https://api.github.com/orgs/{org_name}/repos"
         }
-        with patch(
-            'client.get_json', return_value=expected_payload
-            ) as mock_get_json:
+        with patch('client.get_json',
+                return_value=expected_payload
+                ) as mock_get_json:
             client = GithubOrgClient(org_name)
             result = client.org
             expected_url = f"https://api.github.com/orgs/{org_name}"
@@ -41,9 +41,9 @@ class TestGithubOrgClient(unittest.TestCase):
         """
         expected_url = "https://api.github.com/orgs/test_org/repos"
 
-        with patch(
-            'client.GithubOrgClient.org', new_callable=PropertyMock
-            ) as mock_org:
+        with patch('client.GithubOrgClient.org',
+                new_callable=PropertyMock
+                ) as mock_org:
             mock_org.return_value = {"repos_url": expected_url}
             client = GithubOrgClient("some_org")
             result = client._public_repos_url
@@ -85,8 +85,8 @@ class TestGithubOrgClient(unittest.TestCase):
         ({}, "my_license", False),  # no license key
     ])
     def test_has_license(
-        self, repo: dict, license_key: str, expected_return: bool
-        ) -> None:
+            self, repo: dict, license_key: str, expected_return: bool
+            ) -> None:
         """
         Tests the GithubOrgClient.has_license static method.
         """
