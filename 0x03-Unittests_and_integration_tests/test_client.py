@@ -25,8 +25,8 @@ class TestGithubOrgClient(unittest.TestCase):
             "id": 12345,
             "repos_url": f"https://api.github.com/orgs/{org_name}/repos"
         }
-        with patch('client.get_json',
-                return_value=expected_payload
+        with patch(
+                'client.get_json', return_value=expected_payload
                 ) as mock_get_json:
             client = GithubOrgClient(org_name)
             result = client.org
@@ -41,8 +41,8 @@ class TestGithubOrgClient(unittest.TestCase):
         """
         expected_url = "https://api.github.com/orgs/test_org/repos"
 
-        with patch('client.GithubOrgClient.org',
-                new_callable=PropertyMock
+        with patch(
+                'client.GithubOrgClient.org', new_callable=PropertyMock
                 ) as mock_org:
             mock_org.return_value = {"repos_url": expected_url}
             client = GithubOrgClient("some_org")
