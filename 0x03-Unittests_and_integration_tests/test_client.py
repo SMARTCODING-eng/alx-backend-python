@@ -27,7 +27,8 @@ class TestGithubOrgClient(unittest.TestCase):
             "repos_url": f"https://api.github.com/orgs/{org_name}/repos"
         }
         with patch(
-            'client.get_json', return_value=expected_payload
+            'client.get_json',
+            return_value=expected_payload
             ) as mock_get_json:
             client = GithubOrgClient(org_name)
             result = client.org
@@ -35,7 +36,6 @@ class TestGithubOrgClient(unittest.TestCase):
             mock_get_json.assert_called_once_with(expected_url)
             self.assertEqual(result, expected_payload)
 
-    
     def test_public_repos_url(self) -> None:
         """
         Test that _public_repos_url returns the expected repos_url.
@@ -50,7 +50,6 @@ class TestGithubOrgClient(unittest.TestCase):
             result = client._public_repos_url
             mock_org.assert_called_once()
             self.assertEqual(result, expected_url)
-
 
     @patch('client.get_json')
     def test_public_repos(self, mock_get_json: Mock) -> None:
@@ -77,7 +76,6 @@ class TestGithubOrgClient(unittest.TestCase):
             mock_get_json.assert_called_once_with(test_url)
             mock_url.assert_called_once()
 
-
     @parameterized.expand([
         ({"license": {"key": "my_license"}}, "my_license", True),
         ({"license": {"key": "other_license"}}, "my_license", False),
@@ -93,6 +91,7 @@ class TestGithubOrgClient(unittest.TestCase):
         result = GithubOrgClient.has_license(repo, license_key)
         self.assertEqual(result, expected)
 
+
 @parameterized_class([
     {
         'org_payload': org_payload,
@@ -101,8 +100,8 @@ class TestGithubOrgClient(unittest.TestCase):
         'apache2_repos': apache2_repos
     }
     for
-      org_payload, repos_payload, expected_repos, apache2_repos
-    in fixtures.TEST_PAYLOAD
+        org_payload, repos_payload, expected_repos, apache2_repos
+        in fixtures.TEST_PAYLOAD
 ])
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     """ Integration test for GithubOrgClient.public_repos """
