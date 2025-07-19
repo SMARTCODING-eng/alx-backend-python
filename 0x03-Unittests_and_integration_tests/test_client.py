@@ -135,7 +135,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         client = GithubOrgClient("test_org")
         self.assertEqual(client.public_repos(), self.expected_repos)
 
-    def test_public_repos_with_license_integration(self):
+    def test_public_repos_with_license_license(self):
         """
         Test public_repos with a license filter in an integration setting.
         """
