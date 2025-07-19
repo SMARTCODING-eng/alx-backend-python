@@ -87,9 +87,9 @@ class TestGithubOrgClient(unittest.TestCase):
         ({}, "my_license", False),  # no license key
     ])
     def test_has_license(self,
-                        repo: dict,
-                        license_key: str,
-                        expected_return: bool) -> None:
+                         repo: dict,
+                         license_key: str,
+                         expected_return: bool) -> None:
         """
         Tests the GithubOrgClient.has_license static method.
         """
