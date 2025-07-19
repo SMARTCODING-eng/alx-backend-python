@@ -6,10 +6,12 @@ from parameterized import parameterized
 
 from client import GithubOrgClient
 
+
 class TestGithubOrgClient(unittest.TestCase):
     """
     Tests for the GithubOrgClient class.
     """
+
     @parameterized.expand([
         ("google",),
         ("abc",),
@@ -20,19 +22,18 @@ class TestGithubOrgClient(unittest.TestCase):
         and that get_json is called once with the expected argument.
         """
         expected_payload = {
-                "login": org_name,
-                "id": 12345,
-                "repos_url": f"https://api.github.com/orgs/{org_name}/repos"
-            }
+            "login": org_name,
+            "id": 12345,
+            "repos_url": f"https://api.github.com/orgs/{org_name}/repos"
+        }
         with patch('client.get_json', return_value=expected_payload) as mock_get_json:
             client = GithubOrgClient(org_name)
-            result = client.org          
+            result = client.org
             expected_url = f"https://api.github.com/orgs/{org_name}"
             mock_get_json.assert_called_once_with(expected_url)
             self.assertEqual(result, expected_payload)
 
-
-    def test_public_repos(self) -> None:
+    def test_public_repos_url(self) -> None:
         """
         Tests that _public_repos_url returns the expected URL based on the mocked org payload.
         """
@@ -42,13 +43,11 @@ class TestGithubOrgClient(unittest.TestCase):
             mock_org.return_value = test_payload
             client = GithubOrgClient("some_org")
             result = client._public_repos_url
-
             mock_org.assert_called_once()
             self.assertEqual(result, test_payload["repos_url"])
 
-    
     @patch('client.get_json')
-    def Test_Case(self, mock_get_json: Mock) -> None:
+    def test_public_repos(self, mock_get_json: Mock) -> None:
         """
         Tests that GithubOrgClient.public_repos returns the expected list of repos.
         Mocks get_json to return a chosen payload and
@@ -68,32 +67,25 @@ class TestGithubOrgClient(unittest.TestCase):
                    new_callable=PropertyMock) as mock_public_repos_url:
 
             mock_public_repos_url.return_value = test_public_repos_url_value
-
             client = GithubOrgClient("test_org")
-
             repos = client.public_repos()
-
             expected_repos = ["repo1", "repo2", "repo3", "repo4"]
-            self.assertEqual(repos, expected_repos)
 
+            self.assertEqual(repos, expected_repos)
             mock_get_json.assert_called_once_with(test_public_repos_url_value)
             mock_public_repos_url.assert_called_once()
 
-    # New test method: test_has_license
     @parameterized.expand([
         ({"license": {"key": "my_license"}}, "my_license", True),
         ({"license": {"key": "other_license"}}, "my_license", False),
-        ({"license": None}, "my_license", False), # Test case: license is None
-        ({}, "my_license", False), # Test case: no license key in repo
+        ({"license": None}, "my_license", False),  # license is None
+        ({}, "my_license", False),  # no license key
     ])
     def test_has_license(self, repo: dict, license_key: str, expected_return: bool) -> None:
         """
         Tests the GithubOrgClient.has_license static method.
         """
-        # Call the static method directly on the class
         result = GithubOrgClient.has_license(repo, license_key)
-
-        # Assert that the returned value matches the expected_return
         self.assertEqual(result, expected_return)
 
 
