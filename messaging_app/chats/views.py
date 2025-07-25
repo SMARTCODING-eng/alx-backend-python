@@ -25,6 +25,9 @@ class ConversationViewSet(viewsets.ModelViewSet):
     queryset = Conversation.objects.all()
     serializer_class = ConversationSerializer
     permission_classes = [ permissions.IsAuthenticated]
+    filters = {
+        'search_fields': ['participants__username'],  # Assuming User model has a 'username' field
+        'ordering_fields': ['created_at'],  }
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
