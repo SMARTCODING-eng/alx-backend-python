@@ -20,5 +20,6 @@ from chats.urls import urlpatterns as chats_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/chats/', include(chats_urls))
+    path('api/chats/', include(chats_urls)),
+    path('api-auth', include(chats_urls)),
 ]
