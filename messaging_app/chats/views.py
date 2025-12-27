@@ -5,14 +5,15 @@ from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404
 from .models import User, Conversation, Message
 from .serializers import UserSerializer, ConversationSerializer, MessageSerializer
-
+from django_filters.rest_framework import DjangoFilterBackend
+from .filters import MessageFilter
 
 class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows 
     users to be viewed or edited
     """
-    queryset = User.objects.all().order_by('_date_joined')
+    queryset = User.objects.all().order_by('created_at')
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
@@ -96,6 +97,8 @@ class MessageViewSet(viewsets.ModelViewSet):
     serializer_class = MessageSerializer
     # Only authenticated users can view messages.
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = MessageFilter
 
     def get_queryset(self):
         # Users can only see messages in conversations they are a part of.

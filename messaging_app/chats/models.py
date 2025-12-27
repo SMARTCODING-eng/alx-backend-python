@@ -54,12 +54,12 @@ class User(AbstractBaseUser):
         ]
 
 class Conversation(models.Model):
-    Conversattion_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, db_index=True)
+    conversation_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, db_index=True)
     participants = models.ManyToManyField(User, related_name='conversations')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Conversation {self.Conversattion_id} with {self.participants.count()} participations"
+        return f"Conversation {self.Conversation_id} with {self.participants.count()} participations"
     
     class Meta:
         verbose_name = 'Conversation'
