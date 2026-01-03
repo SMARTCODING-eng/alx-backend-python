@@ -138,6 +138,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framwork_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.TokenAuthentication', # Often used for API clients (e.g., mobile apps)
+        'rest_framework.authentication.BasicAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated', 
