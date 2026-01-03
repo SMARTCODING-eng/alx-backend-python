@@ -11,6 +11,7 @@ class User(AbstractBaseUser):
     last_name = models.CharField(max_length=200, null=False)
     email = models.EmailField(unique=True, null=False)
     phone_number = models.CharField(max_length=20, null=True, blank=True)
+    password = models.CharField(max_length=128, null=False)
 
 
     class Role(models.TextChoices):
